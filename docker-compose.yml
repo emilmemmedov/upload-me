@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: ${PROJECT_NAME}-postgres
+    restart: unless-stopped
+    volumes:
+      - "./sources/postgres:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    ports:
+      - "5432:5432"
+    networks:
+      upload-me-net:
+  backend:
+    container_name: ${PROJECT_NAME}-backend
+    build:
+      dockerfile: Dockerfile
+      context: .
+      # Only will build development stage from our dockerfile
+      target: development
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+    # Run a command against the development stage of the image
+    command: npm run start:dev
+    ports:
+      - 3000:3000
+networks:
+  upload-me-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 17.20.0.0/24
