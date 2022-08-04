@@ -1,9 +1,15 @@
-import { Module } from '@nestjs/common';
+import {forwardRef, Module} from '@nestjs/common';
 import { S3Service } from './services/s3.service';
 import {ConfigModule} from "@nestjs/config";
+import {FileModule} from "../../file/file.module";
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {DimensionEntity} from "./models/dimension.entity";
 
 @Module({
-  imports: [ConfigModule],
+  imports: [
+      ConfigModule,
+      TypeOrmModule.forFeature([DimensionEntity])
+  ],
   providers: [S3Service],
   exports: [S3Service]
 })

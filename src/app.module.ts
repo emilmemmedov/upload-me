@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import {ConfigModule} from "@nestjs/config";
+import {ConfigModule, ConfigService} from "@nestjs/config";
 import * as Joi from "joi";
 import {FileModule} from "./file/file.module";
 import { AwsModule } from './aws/aws.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import {DimensionEntity} from "./aws/s3/models/dimension.entity";
 
 @Module({
   imports: [
@@ -18,6 +20,20 @@ import { AwsModule } from './aws/aws.module';
         PORT: Joi.number(),
         PROJECT_NAME: Joi.string().required()
       })
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        type: 'postgres',
+        host: 'postgres',
+        port: 5432,
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_DATABASE'),
+        entities: [DimensionEntity],
+        synchronize: true,
+      }),
     }),
     FileModule,
     AwsModule
