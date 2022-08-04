@@ -4,9 +4,11 @@ import {ConfigModule} from "@nestjs/config";
 import {FileModule} from "../../file/file.module";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {DimensionEntity} from "./models/dimension.entity";
+import {SharpModule} from "nestjs-sharp";
 
 @Module({
   imports: [
+      SharpModule,
       ConfigModule,
       TypeOrmModule.forFeature([DimensionEntity])
   ],
