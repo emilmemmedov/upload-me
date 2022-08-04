@@ -12,6 +12,9 @@ export class BaseObject {
             case 'image/jpeg':
                 this.object = new ImageObject(file);
                 break;
+            case 'image/png':
+                this.object = new ImageObject(file);
+                break;
             case 'application/pdf':
                 this.object = new PDFObject(file);
                 break;
