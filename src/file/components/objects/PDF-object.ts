@@ -1,4 +1,4 @@
-import {AbstractObject} from "./abstract-object";
+import {AbstractObject} from "../abstract-object";
 
 export class PDFObject implements AbstractObject{
     private file: Express.Multer.File;
@@ -6,6 +6,16 @@ export class PDFObject implements AbstractObject{
     constructor(file: Express.Multer.File) {
         this.file = file;
     }
-    async upload(){}
-    async delete(){}
+
+    getBuffer() {
+        return this.file.buffer;
+    }
+
+    getOriginalName() {
+        return this.file.originalname;
+    }
+
+    getSize() {
+        return this.file.size;
+    }
 }

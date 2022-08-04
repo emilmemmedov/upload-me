@@ -1,8 +1,9 @@
+import {AbstractObject} from "./abstract-object";
 import {ImageObject} from "./objects/image-object";
 import {PDFObject} from "./objects/PDF-object";
-import {AbstractObject} from "./objects/abstract-object";
+import {HttpException} from "@nestjs/common";
 
-export class File implements AbstractFile {
+export class BaseObject {
     private object: AbstractObject;
 
     constructor(file: Express.Multer.File) {
@@ -10,16 +11,15 @@ export class File implements AbstractFile {
             case 'image/jpeg':
                 this.object = new ImageObject(file);
                 break;
-            default:
+            case 'application/pdf':
                 this.object = new PDFObject(file);
+                break;
+            default:
+                throw new HttpException('file format not supported',400);
         }
     }
 
-    async upload() {
-        await this.object.upload()
-    }
-
-    async delete() {
-        await this.object.delete();
+    getObject(){
+        return this.object;
     }
 }

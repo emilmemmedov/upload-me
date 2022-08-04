@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import {ConfigModule} from "@nestjs/config";
 import * as Joi from "joi";
+import {FileModule} from "./file/file.module";
+import { AwsModule } from './aws/aws.module';
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import * as Joi from "joi";
         PORT: Joi.number(),
         PROJECT_NAME: Joi.string().required()
       })
-    })
+    }),
+    FileModule,
+    AwsModule
   ],
 })
 export class AppModule {}

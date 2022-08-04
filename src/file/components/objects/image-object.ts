@@ -1,15 +1,21 @@
-import {AbstractObject} from "./abstract-object";
+import {AbstractObject} from "../abstract-object";
 
-export class ImageObject implements AbstractObject{
+export class ImageObject implements AbstractObject {
     private file: Express.Multer.File;
 
     constructor(file:Express.Multer.File) {
         this.file = file;
     }
 
-    async upload(){
-        console.log(this.file.size);
+    getBuffer() {
+        return this.file.buffer;
     }
 
-    async delete(){}
+    getOriginalName() {
+        return this.file.originalname;
+    }
+
+    getSize() {
+        return this.file.size;
+    }
 }
