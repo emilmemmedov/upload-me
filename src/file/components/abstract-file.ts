@@ -1,0 +1,4 @@
+interface AbstractFile{
+    upload();
+    delete();
+}
